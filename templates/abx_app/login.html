@@ -1,0 +1,26 @@
+<!doctype html>
+{% load static %}
+<html lang="ja">
+<head>
+    <meta charset="utf-8">
+    <meta name="robots" content="noindex">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <link rel="manifest" href="{% static '/material_app/js/manifest.json' %}">
+
+    <title>Log in page</title>
+
+    {% load static %}
+    <link rel="stylesheet" href="{% static '/abx_app/css/home.css' %}?23v2">
+</head>
+<body>
+
+
+    <h1>Experiment<br>login</h1>
+    <form action="{% url 'login' %}" method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <p><input type="submit" value="login"></p>
+    </form>
+</body>
+</html>

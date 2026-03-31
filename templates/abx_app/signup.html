@@ -1,0 +1,24 @@
+<!doctype html>
+{% load static %}
+<html lang="ja">
+<head>
+    <meta charset="utf-8">
+    <meta name="robots" content="noindex">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+
+    <title>Use registration</title>
+
+    {% load static %}
+    <link rel="stylesheet" href="{% static '/abx_app/css/home.css' %}">
+</head>
+<body>
+    <h1>User registration</h1>
+    <form action="{% url 'signup_view' %}" method="post">
+    {% csrf_token %}
+        {{ form.as_p }}
+        <p><input type="submit" value="Register"></p>
+    </form>
+    <!--<a href="{% url 'login' %}">If you already have your account please log in from here</a>-->
+</body>
+</html>

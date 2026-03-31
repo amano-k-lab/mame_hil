@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="robots" content="noindex">
+  <meta name="viewport" content="width=device-width, user-scalable=yes, initial-scale=1, maximum-scale=1"/>
+  <meta name="apple-mobile-web-app-capable" content="yes">
+
+  <title>Material Exp</title>
+
+  {% load static %}
+  <link rel="stylesheet" href="{% static '/abx_app/css/tasks.css' %}?23v2">
+
+  <script>
+      const userName = '{{ user }}';
+  </script>
+
+  <script src="{% static '/abx_app/js/p5.min.js' %}?23v2"></script>
+  <script src="{% static '/abx_app/js/jquery-3.4.1.min.js' %}?23v2"></script>
+  <script src="{% static '/abx_app/js/utils.js' %}?23v2"></script>
+  <script src="{% static '/abx_app/js/config_intro.js' %}?23v2"></script>
+  <script src="{% static '/abx_app/js/instructionSlide.js' %}?23v2"></script>
+
+  <script src="{% static '/abx_app/js/app_intro/intro_config.js' %}?23v2"></script>
+  <script src="{% static '/abx_app/js/app_intro/intro_Scene.js' %}?23v2"></script>
+  <script src="{% static '/abx_app/js/app_intro/intro_SceneManager.js' %}?23v2"></script>
+
+  <script src="{% static '/abx_app/js/app_intro/intro_main.js' %}?23v2"></script>
+
+</head>
+
+<body>
+  <form id="request">{% csrf_token %}</form>
+  <script>
+    // ダブルタップ無効
+    document.body.addEventListener('dblclick', function(e){e.preventDefault(); });
+  </script>
+</body>
+
+</html>

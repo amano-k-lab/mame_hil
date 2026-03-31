@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="robots" content="noindex">
+    <meta name="viewport" content="width=device-width, user-scalable=yes, initial-scale=1, maximum-scale=1"/>
+    <meta name="apple-mobile-web-app-capable" content="yes">
+
+    <title>Consent form</title>
+
+    {% load static %}
+    <link rel="stylesheet" href="{% static '/abx_app/css/home.css' %}?23v2">
+
+
+</head>
+
+
+<body>
+<div class="menu">
+    <h1>Monitor Size</h1>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <p>If you don't know your monitor size in inch, you can check it from <a href="https://www.piliapp.com/actual-size/what-is-my-monitor-size/credit-card/" target="_blank">here</a>.
+        </p>
+        <button type="submit">Submit</button>
+    </form>
+</div>
+<script>
+    // ダブルタップ無効
+    document.body.addEventListener('dblclick', function (e) {
+        e.preventDefault();
+    });
+</script>
+</body>
+
+</html>

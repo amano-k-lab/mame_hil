@@ -1,0 +1,59 @@
+EXP_CONDS:
+  # 画像生成に関する実験条件。以下の３つのCONDの要素数を掛け算し１ブロックの試行数を計算する。
+  # 実験では１ブロックの中で提示する条件順をランダムにシャッフルして提示する。
+  LAYER_COND: #合成に使うレイヤー条件。追加する場合はハイフンでつなぐ
+    - 'conv1'
+#    - 'layer3'
+#    - 'avgpool'
+  COMP_COND: #主成分次元に関する条件
+#    - '0'
+    - '1'
+#    - '2'
+  SIGN_COND: #主成分次元のプラスマイナスに関する条件.実際の符号計算はtasks.pyで行うことを想定している。
+#    - 'plus'
+    - 'minus'
+  MODE: #pca or ica
+    - 'ica'
+  # 偏心度（周辺視野）条件。視角で定義。
+  # Djangoデータベースには、偏心度.LAYER_COND.COMP_COND.SIGN_CONDの
+  # 辞書に結果を保存していく。
+  ECC_COND:
+    - 4 # in degrees. 画面中心から画像中心までの距離. 4|8|12
+  # 各条件の初期値。ひとまずレイヤーが何かによって初期値を変えている。
+  INIT_VAL:
+    conv1: 51
+    layer3: 1.0
+    avgpool: 0.11
+  # 実験スタート時にパラメータを初期値に戻すかどうかを決定する。その実験条件で初めて実験をする場合には自動的に初期値を使う。
+  IS_RESET: False
+  # 上下法の反転が何回生じたら収束とするかの判定。
+  NUM_CONVERGE: 6
+  # 各条件のステップ値。layerごとにステップの値の幅を変えるようにしている。
+  STEP_VAL:
+    conv1: 10
+    layer3: 0.3
+    avgpool: 0.02
+  # 各条件の最低値
+  MIN_VAL:
+    conv1: 1
+    layer3: 0.01
+    avgpool: 0.01
+
+
+PATH: #ファイルの一時保存等に関するパスの変数
+  ROOT_IMG: 'static/abx_app/img/'
+  DIR_INIT: 'pool' #提示する予定の画像はroot_image+dir_imgsに配置する
+  FMT_IMG: '.png'
+
+REP:
+  REP_MAX: 10 #最大繰り返し数
+  NUM_PER_READY: 10 #Ready?という画面を提示するまでの試行回数
+
+STIM: #実験刺激のサイズや提示位置についての変数
+  SIZE_IMG: 4  # in degrees
+  # Tobiiが接続されているかどうか
+  IS_TOBII: True
+  # 中心視角何度の注視をしていたらデータを記録するか
+  RADIUS_THRESHOLD: 108 # in pix. 43ppd
+  MONITOR_RES_W: 1848 # in pix
+  MONITOR_RES_H: 1053 # in pix

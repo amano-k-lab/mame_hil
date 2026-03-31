@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="robots" content="noindex">
+  <meta name="viewport" content="width=device-width, user-scalable=yes, initial-scale=1, maximum-scale=1"/>
+  <meta name="apple-mobile-web-app-capable" content="yes">
+
+  <title>Consent form</title>
+
+  {% load static %}
+  <link rel="stylesheet" href="{% static '/abx_app/css/home.css' %}?23v2">
+
+  <script>
+      const userName = '{{ user }}';
+      const is_first_measurement = '{{ is_first_measurement }}';
+  </script>
+
+</head>
+
+
+<body>
+    <div class="menu">
+    <form action="{% url 'monitor' %}" method="POST">{% csrf_token %}
+        <div>
+        <h1>Consent form</h1>
+        <textarea rows="20" cols="100" readonly>{{ terms }}</textarea>
+        </div>
+        <div>
+            <label>
+                <input type="checkbox" name="agree" required>
+                I agree to the consent form.
+            </label>
+        </div>
+        <div>
+            <input type="submit" value="Start Experiment">
+        </div>
+    </form>
+    </div>
+  <script>
+    // ダブルタップ無効
+    document.body.addEventListener('dblclick', function(e){e.preventDefault(); });
+  </script>
+</body>
+
+</html>

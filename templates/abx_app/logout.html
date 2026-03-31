@@ -1,0 +1,20 @@
+<!doctype html>
+{% load static %}
+<html lang="ja">
+<head>
+    <meta charset="utf-8">
+    <meta name="robots" content="noindex">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+
+    <title>logout</title>
+
+    {% load static %}
+    <link rel="stylesheet" href="{% static '/abx_app/css/home.css' %}">
+</head>
+<body>
+    <p>You are logged out</p>
+    <a href="{% url 'login' %}">Back to log in page</a>
+</body>
+
+</html>

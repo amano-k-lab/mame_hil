@@ -1,0 +1,198 @@
+
+layers:
+  - conv1
+  - layer3
+  - avgpool
+layer1_name: conv1
+
+# condition として取りうる全状態
+modes: ["ica"]
+ecc: [3, 6, 9]
+components: [0, 1, 2]
+directions: ["plus", "minus"]
+
+# 0_validation
+val_paths:
+  validation_root: "data/images/validation/ILSVRC2012_img_val/"
+  meta_path: "data/images/validation/ILSVRC2012_devkit_t12/data/meta.mat"
+  label_file: "data/images/validation/ILSVRC2012_devkit_t12/data/ILSVRC2012_validation_ground_truth.txt"
+  val_path: "data/images/validation/ILSVRC2012_img_val_for_ImageFolder"
+
+# 1_extract_gram_matrix
+model_path: "data/models/imagenet_l2_3_0.pt"
+gram_matrix:
+  num_samples: # gram matrix を抽出してくる枚数
+    conv1: 1000
+    layer1: 1000
+    layer2: 1000
+    layer3: 1000
+    layer4: 1000
+    avgpool: 1000
+  gram_path: "data/gram_matrices" # / f"gram_matrices_{layername}.npy"
+  gram_path_default: "data/gram_matrices_default" # / f"gram_matrices_{layername}.npy"
+  gram_path_stylized: "data/gram_matrices_stylized" # / f"gram_matrices_{layername}.npy"
+
+# 2_extract_ica
+ica:
+  num_components_full: 100 # ica 初回実行での成分数
+  num_components_top_k: 10 # ica 初回実行時, explained variance top_k 成分を抽出して別ファイルに保存
+  ica_models: "data/models/decomposition/ica" # / "f{layername}.pkl"
+  ica_models_full: "data/models/decomposition/ica_full" # / "f{layername}.pkl"
+  ica_models_top10: "data/models/decomposition/ica_top10" # / "f{layername}.pkl"
+  ica_explained_variance_fig: "output/figures/explained_variance" # / f"{layername}.png"
+
+  ica_models_default: "data/models/decomposition/ica_default" # / f"{layername}.pkl"
+  ica_models_default_full: "data/models/decomposition/ica_default_full" # / f"{layername}.pkl"
+  ica_models_default_top10: "data/models/decomposition/ica_default_top10" # / f"{layername}.pkl"
+
+  ica_models_stylized: "data/models/decomposition/ica_stylized" # / f"{layername}.pkl"
+  ica_models_stylized_full: "data/models/decomposition/ica_stylized_full" # / f"{layername}.pkl"
+  ica_models_stylized_top10: "data/models/decomposition/ica_stylized_top10" # / f"{layername}.pkl"
+
+pca:
+  num_components_full: 100
+  num_components_top_k: 10
+  pca_models: "data/models/decomposition/pca"
+  pca_models_full: "data/models/decomposition/pca_full"
+  pca_models_top10: "data/models/decomposition/pca_top10"
+  pca_explained_variance_fig: "output/figures/explained_variance_pca"
+
+# 3_image_decomposition_components
+img_components:
+  num_components_default: 3 # 表示component 数 argparse で上書き可能
+  attack_params: # attack_params の目安値を layer に応じて設定
+    conv1:
+      alpha: 0.01
+      beta: 0.00001
+      num_iterations: 50
+    layer1:
+      alpha: 0.01
+      beta: 0.00001
+      num_iterations: 50
+    layer2:
+      alpha: 0.01
+      beta: 0.0001
+      num_iterations: 50
+    layer3:
+      alpha: 0.01
+      beta: 0.01
+      num_iterations: 50
+    layer4:
+      alpha: 0.01
+      beta: 0.01
+      num_iterations: 50
+    avgpool:
+      alpha: 0.01
+      beta: 1
+      num_iterations: 50
+  num_components_max: 15 # 表示component 数の 最大値
+  ica_components_fig: "output/figures/ica_components_img" # / f"{layername}.png"
+  pca_components_fig: "output/figures/pca_components_img"
+
+  target_values: # target 値は変化が見やすいようlayer により変動
+    # conv1:
+    #   values: [+50, +25, -25, -50]
+    #   keys_order: ["-50", "-25", "original", "25", "50"]
+    # layer1:
+    #   values: [+3, +1.5, -1.5, -3]
+    #   keys_order: ["-3", "-1.5", "original", "1.5", "3"]
+    # layer2:
+    #   values: [+2, +1, -1, -2]
+    #   keys_order: ["-2", "-1", "original", "1", "2"]
+    # layer3:
+    #   values: [+0.8, +0.4, -0.4, -0.8]
+    #   keys_order: ["-0.8", "-0.4", "original", "0.4", "0.8"]
+    # layer4:
+    #   values: [+0.4, +0.2, -0.2, -0.4]
+    #   keys_order: ["-0.4", "-0.2", "original", "0.2", "0.4"]
+    # avgpool:
+    #   values: [+0.3, +0.15, -0.15, -0.3]
+    #   keys_order: ["-0.3", "-0.15", "original", "0.15", "0.3"]
+
+    conv1:
+      values: [+3, +1.5, -1.5, -3]
+      keys_order: ["-3", "-1.5", "original", "1.5", "3"]
+    layer3:
+      values: [+0.4, +0.2, -0.2, -0.4]
+      keys_order: ["-0.8", "-0.4", "original", "0.4", "0.8"]
+    avgpool:
+      values: [+0.4, +0.2, -0.2, -0.4]
+      keys_order: ["-0.4", "-0.2", "original", "0.2", "0.4"]
+
+# 4_select_ica_components
+selected_components: # top_k のうち同一の意味ではないと認識された 3成分 0-indexed
+  conv1: [0, 1, 2]
+  layer1: [0, 3, 6]
+  layer2: [0, 1, 2]
+  layer3: [0, 1, 2]
+  layer4: [0, 1, 2]
+  avgpool: [0, 1, 2]
+
+# 5_extract_original_images
+extract_original:
+  num_samples: 50000 # original 画像を探す候補
+  # 任意のlayer について ica 座標の 原点からの距離が画像全体の top_percent 以下 を満たすものを選択
+  # top_percent の基準はgram matrix として取得したデータから取得
+  top_percent: 40
+  batch_size: 500
+imgpool_path: 'static/abx_app/img/pool' # 選択した画像の配置場所
+example_imgpool_path: 'static/abx_app/img/example' # 使用する例の配置場所
+ 
+# 6_tune_param
+tune_param:
+  num_samples: 5
+  # 1 trial でloss を計算するときの参照target valueの個数, 画像はpool からランダム取得
+  # target value がvalue order区間から対数等間隔(1の場合下限に1つ) に取得
+  num_trials: # optuna 試行回数
+    conv1: 30
+    layer1: 30
+    layer2: 30
+    layer3: 30
+    layer4: 30
+    avgpool: 30
+  value_range_log10: # target value探索範囲 (log10)
+    conv1: [0.0, 3.0]
+    layer1: [-1.0, 2.0]
+    layer2: [-1.0, 2.0]
+    layer3: [-2.0, 1.0]
+    layer4: [-2.0, 1.0]
+    avgpool: [-2.0, 1.0]
+  value_range_border_log10: # target value探索範囲 (log10)
+    conv1: [0.5, 2.5]
+    layer3: [-1.5, 0.5]
+    avgpool: [-1.5, 0.5]
+  value_step_log10: # value order 区間の幅
+  # 例えば 1 では [10, 100], [100, 1000] のように区間が定まる
+    conv1: 0.5
+    layer1: 0.5
+    layer2: 0.5
+    layer3: 0.5
+    layer4: 0.5
+    avgpool: 0.5
+  search_range_log10: # αの探索初期値に対してどこまでの範囲でαを探索するか
+  # 探索初期値の定義は get_init_alpha
+    conv1: [-0.5, 1.5]
+    layer1: [-0.5, 1.5]
+    layer2: [-0.5, 1.5]
+    layer3: [-1.0, 1.0]
+    layer4: [-1.0, 1.0]
+    avgpool: [-0.5, 1.5]
+  optimized_params: "data/tuned_params/optimized_params.json" # 最適パラメータ(json)
+
+# 7_fit_param
+alpha_func:
+  func_path: "data/tuned_params/alpha_funcs/" # f"alpha_func_of_{layername}.pkl"
+  # 滑らかにフィッティングしたalpha func の保存先
+  func_fig: "output/figures/alpha_func" # / f"{layer}.png"
+  # alpha func のplot
+
+# 8_evaluate_param
+eval_param:
+  num_samples: 50 # 評価画像, 画像はpool からランダム, cond も(layer 以外)ランダム
+  plot_path: "output/figures/all_condition_loss.png"
+  # 各layer に対して全ての評価画像 のloss (初期値1 に標準化) を重ねてplot した画像
+
+# 9 spearman_test
+spearman_test:
+  num_samples: 100 # スピアマン相関を測るための数列の要素数
+  # tune param で定義した全区間から対数ランダムにtarget values を取得し, actual value を比較

@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="robots" content="noindex">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1, maximum-scale=1"/>
+    <meta name="apple-mobile-web-app-capable" content="yes">
+
+    {% load static %}
+    <link rel="stylesheet" href="{% static '/abx_app/css/tasks.css' %}?23v2">
+    <title>Material Exp</title>
+
+    <script>
+        const userName = '{{ user }}';
+        const PATH_IMG_PRE = '{{ path_img_pre }}';
+        const APP_VER = '{{APP_VER}}';
+        const FLAG_READY ='{{flag_ready}}';
+        const SIZE_IMG = Number('{{size_img}}');
+        const SHIFT_IMG = Number('{{shift_img}}');
+    </script>
+
+    <script src="{% static '/abx_app/js/p5.min.js' %}?v={{APP_VER}}"></script>
+    <script src="{% static '/abx_app/js/jquery-3.4.1.min.js' %}?v={{APP_VER}}"></script>
+    <script src="{% static '/abx_app/js/utils.js' %}?v={{APP_VER}}"></script>
+    <script src="{% static '/abx_app/js/list_orig.js' %}?v={{APP_VER}}"></script>
+    <script src="{% static '/abx_app/js/list_fake.js' %}?v={{APP_VER}}"></script>
+    <script src="{% static '/abx_app/js/config.js' %}?v={{APP_VER}}"></script>
+    <script src="{% static '/abx_app/js/instructionSlide.js' %}?v={{APP_VER}}"></script>
+    <script src="{% static '/abx_app/js/material.js' %}?v={{APP_VER}}"></script>
+
+
+    <script src="{% static '/abx_app/js/app_exp/exp_config.js' %}?v={{APP_VER}}"></script>
+    <script src="{% static '/abx_app/js/app_exp/exp_Scene.js' %}?v={{APP_VER}}"></script>
+    <script src="{% static '/abx_app/js/app_exp/exp_SceneManager.js' %}?v={{APP_VER}}"></script>
+
+    <script src="{% static '/abx_app/js/app_exp/exp_main.js' %}?v={{APP_VER}}"></script>
+
+</head>
+
+<body>
+<form id="request">{% csrf_token %}</form>
+<script>
+    // ダブルタップ無効
+    document.body.addEventListener('dblclick', function (e) {
+        e.preventDefault();
+    });
+</script>
+</body>
+
+</html>
